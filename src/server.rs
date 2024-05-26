@@ -1,5 +1,6 @@
-use log::{debug, error, info};
-use crate::commands::execute_command;
+use log::{debug, error, info, trace};
+use crate::task_manager::{Task};
+use serde_json::from_str;
 
 pub(crate) fn main() -> std::io::Result<()> {
     use interprocess::local_socket::{prelude::*, GenericNamespaced, ListenerOptions, Stream};
@@ -41,8 +42,8 @@ pub(crate) fn main() -> std::io::Result<()> {
         conn.read_line(&mut buffer)?;
         debug!("Client answered: {buffer}");
 
-        let command_str: String = buffer.trim().replace("\n", "");
-        let mut answer: String = execute_command(command_str);
+        let task: Task = from_str(&buffer).unwrap();
+        let mut answer: String = task.run();
 
         answer.push('\n');
         conn.get_mut().write_all(answer.as_ref())?;

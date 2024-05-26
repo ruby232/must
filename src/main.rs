@@ -1,18 +1,18 @@
-use clap::{Arg, ArgAction, ArgMatches};
+use clap::{Arg, ArgAction, ArgMatches, Command};
 use symphonia::core::errors::{Result};
 use log::{error};
-use crate::commands::Command;
+use crate::task_manager::{Task, TaskType};
 
 mod server;
 mod client;
 mod play;
 
 pub mod output;
-mod commands;
+pub mod task_manager;
 
 fn main() {
     pretty_env_logger::init();
-    let args = clap::Command::new("Must")
+    let args = Command::new("Must")
         .version("0.1")
         .author("Ruby <ruby232@gmail.com>")
         .about("A simple music player for the terminal.")
@@ -31,7 +31,13 @@ fn main() {
                 .action(ArgAction::SetTrue)
                 .help("Play/pause the music")
                 .conflicts_with_all(&["server"]),
-        )
+        ).arg(
+        Arg::new("play_file")
+            .short('f')
+            .long("play-file")
+            .help("Play the audio file")
+            .conflicts_with_all(&["server", "play_pause"]),
+    )
         .get_matches();
 
     let code = run(&args).unwrap_or_else(|err| {
@@ -49,18 +55,26 @@ fn run(args: &ArgMatches) -> Result<i32> {
         return Ok(0);
     }
 
-    let mut command: Command = Command::None;
+    let mut task: Task = Task {
+        kind: TaskType::NotFound,
+        arg: None,
+    };
+
 
     if args.get_flag("play_pause") {
-        command = Command::PlayPause;
+        task.kind = TaskType::PlayPause;
     }
 
-    if let Command::None = command {
+    if let Some(file) = args.get_one::<String>("play_file") {
+        task.kind = TaskType::PlayFile;
+        task.arg = Some(file.to_string());
+    }
+
+    if task.is_not_found() {
         error!("Command not found");
         return Ok(1);
     }
 
-    client::send(command)?;
-
+    client::send(task)?;
     Ok(0)
 }

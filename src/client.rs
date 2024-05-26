@@ -1,7 +1,8 @@
 use log::debug;
-use crate::commands::Command;
+use crate::task_manager::{ Task};
+use serde_json::to_string;
 
-pub(crate) fn send(command: Command) -> std::io::Result<()> {
+pub(crate) fn send(task: Task) -> std::io::Result<()> {
 	use interprocess::local_socket::{prelude::*, GenericFilePath, GenericNamespaced, Stream};
 	use std::io::{prelude::*, BufReader};
 
@@ -18,7 +19,7 @@ pub(crate) fn send(command: Command) -> std::io::Result<()> {
 
 	let conn = Stream::connect(name)?;
 	let mut conn = BufReader::new(conn);
-	let mut msg = command.to_string();
+	let mut msg = to_string(&task).unwrap();
 	msg.push('\n');
 	debug!("Sending command: {msg}");
 	conn.get_mut().write_all(msg.as_ref())?;
