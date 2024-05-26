@@ -1,6 +1,7 @@
 use log::debug;
+use crate::commands::Command;
 
-pub(crate) fn send(command: &mut String) -> std::io::Result<()> {
+pub(crate) fn send(command: Command) -> std::io::Result<()> {
 	use interprocess::local_socket::{prelude::*, GenericFilePath, GenericNamespaced, Stream};
 	use std::io::{prelude::*, BufReader};
 
@@ -17,10 +18,12 @@ pub(crate) fn send(command: &mut String) -> std::io::Result<()> {
 
 	let conn = Stream::connect(name)?;
 	let mut conn = BufReader::new(conn);
-	command.push('\n');
-	conn.get_mut().write_all(command.as_ref())?;
+	let mut msg = command.to_string();
+	msg.push('\n');
+	debug!("Sending command: {msg}");
+	conn.get_mut().write_all(msg.as_ref())?;
 	conn.read_line(&mut buffer)?;
-	// @todo, Aqui se trataria la respuesta del comando para mostrarlo pro consola al usuario
+	println!("{}", buffer);
 	debug!("Server answered: {buffer}");
 	Ok(())
 }

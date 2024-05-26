@@ -1,8 +1,8 @@
 # Must
 **In construction**
-Must is a simple music player form command line. 
-It is clon of [mocp](https://github.com/jonsafari/mocp).
-Use the libraries [Symphonia](https://github.com/pdeljanov/Symphonia) to play music.
+Must is a simple music player form command line.     
+It is clon of [mocp](https://github.com/jonsafari/mocp).   
+Use the libraries [Symphonia](https://github.com/pdeljanov/Symphonia) to play music.   
 
 Develop on twitch live streams [rubyc232](https://www.twitch.tv/rubyc232)
 

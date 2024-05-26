@@ -1,12 +1,14 @@
 use clap::{Arg, ArgAction, ArgMatches};
 use symphonia::core::errors::{Result};
 use log::{error};
+use crate::commands::Command;
 
 mod server;
 mod client;
 mod play;
 
 pub mod output;
+mod commands;
 
 fn main() {
     pretty_env_logger::init();
@@ -47,16 +49,18 @@ fn run(args: &ArgMatches) -> Result<i32> {
         return Ok(0);
     }
 
-    let mut command: String = String::from("");
+    let mut command: Command = Command::None;
 
     if args.get_flag("play_pause") {
-        command = String::from("play_pause");
+        command = Command::PlayPause;
     }
 
-    if !command.is_empty() {
-        println!("Sending command: {}", command);
-        client::send(&mut command)?;
+    if let Command::None = command {
+        error!("Command not found");
+        return Ok(1);
     }
+
+    client::send(command)?;
 
     Ok(0)
 }
