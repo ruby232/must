@@ -20,4 +20,12 @@ cargo run -- -h
 - `q` - Quit
 
 ## Todo
-- [ ] Agregar mecanismo de señales para emeitir eventos de los coman dos que le llegan al servidor
+- [ ] Agregar mecanismo de señales para emitir/capturar eventos de los comandos que le llegan al servidor.
+- [ ] Mejorar la clase play.]
+- [ ] Agregar comando de play/pause.
+- [ ] Agregar comando de stop.
+- [ ] Agregar comando de next.
+- [ ] Agregar comando de previous.
+- [ ] Agregar comando de volume.
+- [ ] Agregar soporte para cambiar de canción.
+- [ ] Agregar Sistema de plugins para las fuentes de audio.
