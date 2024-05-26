@@ -1,7 +1,6 @@
-use std::env;
-use clap::{Arg, ArgAction, ArgMatches, command};
-use symphonia::core::errors::{Error, Result};
-use log::{debug, error, info};
+use clap::{Arg, ArgAction, ArgMatches};
+use symphonia::core::errors::{Result};
+use log::{error};
 
 mod server;
 mod client;

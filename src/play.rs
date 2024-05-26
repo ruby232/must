@@ -42,7 +42,7 @@ pub fn play() {
     let track_id = track.id;
 
     // Set audio output
-    let mut audio_output: &mut Option<Box<dyn output::AudioOutput>> = &mut None;
+    let audio_output: &mut Option<Box<dyn output::AudioOutput>> = &mut None;
 
 
     loop {
@@ -70,6 +70,8 @@ pub fn play() {
                     // TODO: Check the audio spec. and duration hasn't changed.
                 }
 
+                // @todo, analizar esta parte proque packet.ts() dice que siempre es mayor que 0
+                // revisar la logica de symphonia-play
                 if packet.ts() >= 0 {
                     if let Some(audio_output) = audio_output {
                         audio_output.write(decoded).unwrap()
