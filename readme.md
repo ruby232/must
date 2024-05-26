@@ -23,8 +23,11 @@ cargo run -- -h
 - `q` - Quit
 
 ## Todo
-- [ ] Agregar mecanismo de señales para emitir/capturar eventos de los comandos que le llegan al servidor.
-- [ ] Mejorar la clase play.]
+- [x] Agregar mecanismo de señales para emitir/capturar eventos de los comandos que le llegan al servidor.
+- [ ] Hacer un singleton para la clase play.
+- [ ] Hacer que el servidor se quede ejecutanodoce en segundo plano.
+- [ ] Escribir logs en un fichero.
+- [ ] Mejorar la clase play.
 - [ ] Agregar comando de play/pause.
 - [ ] Agregar comando de stop.
 - [ ] Agregar comando de next.
