@@ -1,7 +1,7 @@
 use std::env;
-use clap::{Arg, ArgAction, ArgMatches};
+use clap::{Arg, ArgAction, ArgMatches, command};
 use symphonia::core::errors::{Error, Result};
-use log::error;
+use log::{debug, error, info};
 
 mod server;
 mod client;
@@ -42,15 +42,21 @@ fn main() {
 }
 
 fn run(args: &ArgMatches) -> Result<i32> {
-    if args.contains_id("server") {
+    if args.get_flag("server") {
+        println!("Starting server ...");
         server::main()?;
-        return Ok(0)
+        return Ok(0);
     }
 
-    if args.contains_id("play_pause") {
-        // @Todo: Implement play/pause
-        println!("Todo: Playing music");
-       // play::play();
+    let mut command: String = String::from("");
+
+    if args.get_flag("play_pause") {
+        command = String::from("play_pause");
+    }
+
+    if !command.is_empty() {
+        println!("Sending command: {}", command);
+        client::send(&mut command)?;
     }
 
     Ok(0)

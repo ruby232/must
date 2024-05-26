@@ -40,7 +40,7 @@ pub(crate) fn main() -> std::io::Result<()> {
 		conn.read_line(&mut buffer)?;
 
 		conn.get_mut().write_all(b"Server!\n")?;
-		debug!("Client answered: {buffer}");
+		println!("Client answered: {buffer}");
 
 		if buffer == "pause\n" {
 			//@todo, llamar al metodo de pausa
